@@ -29,7 +29,7 @@
 NOAAProvider::NOAAProvider(QObject *parent, const QVariantList &args)
     : PotdProvider(parent, args)
 {
-    const QUrl url(QStringLiteral("http://www.nesdis.noaa.gov/content/imagery-and-data"));
+    const QUrl url(QStringLiteral("https://www.nesdis.noaa.gov/content/imagery-and-data"));
 
     KIO::StoredTransferJob *job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
     connect(job, &KIO::StoredTransferJob::finished, this, &NOAAProvider::firstPageRequestFinished);
@@ -62,7 +62,7 @@ void NOAAProvider::firstPageRequestFinished(KJob* _job)
     auto result = re.match(data);
     if (result.hasMatch())
     {
-        url = QStringLiteral("http://www.nesdis.noaa.gov/content/") + result.captured(1);
+        url = QStringLiteral("https://www.nesdis.noaa.gov/content/") + result.captured(1);
     }
     if (url.isEmpty())
     {
