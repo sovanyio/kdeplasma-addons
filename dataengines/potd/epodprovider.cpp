@@ -29,7 +29,7 @@
 EpodProvider::EpodProvider( QObject *parent, const QVariantList &args )
     : PotdProvider(parent, args)
 {
-    const QUrl url(QStringLiteral("http://epod.usra.edu/blog/"));
+    const QUrl url(QStringLiteral("https://epod.usra.edu/blog/"));
 
     KIO::StoredTransferJob *job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
     connect(job, &KIO::StoredTransferJob::finished, this, &EpodProvider::pageRequestFinished);
@@ -52,13 +52,13 @@ void EpodProvider::pageRequestFinished(KJob *_job)
 
     const QString data = QString::fromUtf8( job->data() );
 
-    const QString pattern = QStringLiteral("http://epod.usra.edu/.a/*-pi");
+    const QString pattern = QStringLiteral("https://epod.usra.edu/.a/*-pi");
     QRegExp exp( pattern );
     exp.setPatternSyntax(QRegExp::Wildcard);
 
     int pos = exp.indexIn( data ) + pattern.length();
     const QString sub = data.mid( pos-4, pattern.length()+6);
-    const QUrl url(QStringLiteral("http://epod.usra.edu/.a/%1-pi").arg(sub));
+    const QUrl url(QStringLiteral("https://epod.usra.edu/.a/%1-pi").arg(sub));
     KIO::StoredTransferJob *imageJob = KIO::storedGet( url, KIO::NoReload, KIO::HideProgressInfo );
     connect(imageJob, &KIO::StoredTransferJob::finished, this, &EpodProvider::imageRequestFinished);
 }
